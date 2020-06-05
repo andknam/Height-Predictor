@@ -1,0 +1,116 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "height predictor",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "PatientInfoIntent",
+          "slots": [
+            {
+              "name": "name",
+              "type": "AMAZON.FirstName"
+            },
+            {
+              "name": "height",
+              "type": "AMAZON.NUMBER"
+            },
+            {
+              "name": "skeletal_year",
+              "type": "AMAZON.NUMBER"
+            },
+            {
+              "name": "skeletal_month",
+              "type": "AMAZON.NUMBER"
+            },
+            {
+              "name": "gender",
+              "type": "Gender"
+            },
+            {
+              "name": "growth_type",
+              "type": "GrowthType"
+            }
+          ],
+          "samples": [
+            "make a height prediction for {name} a {gender} who is currently {height} inches tall with a {growth_type} skeletal age of {skeletal_year} years and {skeletal_month} months "
+          ]
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "SavedInfoIntent",
+          "slots": [
+            {
+              "name": "name",
+              "type": "AMAZON.FirstName"
+            }
+          ],
+          "samples": [
+            "get information for {name}"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "value": "girl",
+                "synonyms": [
+                  "female"
+                ]
+              }
+            },
+            {
+              "name": {
+                "value": "boy",
+                "synonyms": [
+                  "male"
+                ]
+              }
+            }
+          ],
+          "name": "Gender"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "value": "normal",
+                "synonyms": [
+                  "average"
+                ]
+              }
+            },
+            {
+              "name": {
+                "value": "delayed"
+              }
+            },
+            {
+              "name": {
+                "value": "accelerated"
+              }
+            }
+          ],
+          "name": "GrowthType"
+        }
+      ]
+    }
+  },
+  "version": "17"
+}
