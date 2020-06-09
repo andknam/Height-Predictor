@@ -8,10 +8,14 @@ The prediction tables can be found [here!](https://docs.google.com/spreadsheets/
 
 The accompanying proof-of-concept web application can be found [here!](http://andrew22124.pythonanywhere.com)
 
-**Features In Progress:**
+**Alexa Skill Features In Progress:**
 - [ ] option to ask for the information of a previously documented patient
 - [x] (added 5/25/2020) add patient gender and age as variables
 - [x] (added 5/25/2020) parse different height prediction tables based on the gender and age variables
 - [x] (v1 added 5/25/2020) parse out the input values from a single utterance, rather than asking the user for input values one by one
 - [x] (added 6/5/2020) store patient information in database 
 - [x] (added 6/5/2020) make sure parsing values are in the table
+
+**Web App Features In Progress:**
+- [x] (added 6/9/2020) automatically unchecks checkbox when a different checkbox is selected
+= [x] (added 6/9/2020) fixed some processing problems
