@@ -18,4 +18,4 @@ The accompanying proof-of-concept web application can be found [here!](http://an
 
 **Web App Features In Progress:**
 - [x] (added 6/9/2020) automatically unchecks checkbox when a different checkbox is selected
-= [x] (added 6/9/2020) fixed some processing problems
+- [x] (added 6/9/2020) fixed some processing problems
