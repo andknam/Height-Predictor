@@ -61,21 +61,18 @@ def form_page():
                 return render_template('error_response.html', response=response)
 
             else:
-                predicted_height = prediction_info[0]
-                percent_of_mature = prediction_info[1]
-                return '''
-                    <html>
-                        <body>
-                            <p>Height: {} inches</p>
-                            <p>Skeletal Age: {} years and {} months</p>
-                            <p>{}'s predicted height is about {}.</p>
-                            <p>They have completed {}% of their growth!</p>
-                            <img src="https://s3.amazonaws.com/lowres.cartoonstock.com/children-height-height_charts-grows-tall-measures-rbon240_low.jpg"
-                            style="width:200px;height:300px;">
-                            <p><a href="/">Click here to make another height prediction!</a>
-                        </body>
-                    </html>
-                    '''.format(recent_height, skeletal_year, skeletal_month, patient, predicted_height, percent_of_mature)
+                ph = prediction_info[0]
+                pm = prediction_info[1]
+
+                rh = recent_height
+                sy = skeletal_year
+                sm = skeletal_month
+                p = patient
+
+                if gender == 'male':
+                    return render_template('valid_male_response.html', rh=rh, sy=sy, sm=sm, p=p, ph=ph, pm=pm)
+                else:
+                    return render_template('valid_female_response.html', rh=rh, sy=sy, sm=sm, p=p, ph=ph, pm=pm)
 
     return render_template('form_page.html', errors=errors)
 
