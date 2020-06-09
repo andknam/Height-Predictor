@@ -55,6 +55,7 @@
       </form>
 
       <script>
+      /* unchecks checkbox when a different checkbox is selected */
       function genderCbChange(obj) {
         var checkboxes = document.getElementsByName('gender-checkbox');
         for(var i = 0; i < checkboxes.length; i++)
@@ -63,7 +64,8 @@
         }
         obj.checked = true
       }
-
+       
+      /* unchecks checkbox when a different checkbox is selected */
       function growthCbChange(obj) {
         var checkboxes = document.getElementsByName('growth-checkbox');
         for(var i = 0; i < checkboxes.length; i++)
