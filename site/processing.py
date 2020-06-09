@@ -114,10 +114,14 @@ def get_prediction_info(gender, recent_height, growth_type, skeletal_year, skele
         # first row holds skeletal age values
         if row_num == 0:
             skeletal_list.append(row[2:])
-            lowest_skeletal = int(skeletal_list[0][0][:len(str(skeletal_year))])
+
+            lowest_skeletal = skeletal_list[0][0]
+            dash_index1 = lowest_skeletal.find('-')
+            lowest_skeletal = int(lowest_skeletal[:dash_index1])
+
             tallest_skeletal = skeletal_list[0][len(skeletal_list[0]) - 1]
-            dash_index = tallest_skeletal.find('-')
-            tallest_skeletal = int(tallest_skeletal[:dash_index])
+            dash_index2 = tallest_skeletal.find('-')
+            tallest_skeletal = int(tallest_skeletal[:dash_index2])
         # second row holds percent of mature height values
         elif row_num == 1:
             key, value = row[1], row[2:]
