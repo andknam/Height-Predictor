@@ -41,50 +41,36 @@
       <div class='row'>
         <div class='column'>
           <p><span style='text-decoration: underline;'>Gender</span>:</p>
-          <p><input type='checkbox' name='gender-checkbox' value='male' onclick='return ValidGenderSelect();'/>Male</p>
-          <p><input type='checkbox' name='gender-checkbox' value='female' onclick='return ValidGenderSelect();'/>Female</p>
+          <p><input type='checkbox' name='gender-checkbox' value='male' onchange='genderCbChange(this)'/>Male</p>
+          <p><input type='checkbox' name='gender-checkbox' value='female' onchange='genderCbChange(this)'/>Female</p>
         </div>
         <div class='column'>
           <p><span style='text-decoration: underline;'>Growth Type</span>:</p>
-          <p><input type='checkbox' name='growth-checkbox' value='normal' onclick='return ValidGrowthSelect();'/> Normal</p>
-          <p><input type='checkbox' name='growth-checkbox' value='accelerated' onclick='return ValidGrowthSelect();'/> Accelerated</p>
-          <p><input type='checkbox' name='growth-checkbox' value='delayed' onclick='return ValidGrowthSelect();'/> Delayed</p>
+          <p><input type='checkbox' name='growth-checkbox' value='normal' onchange='growthCbChange(this)'/> Normal</p>
+          <p><input type='checkbox' name='growth-checkbox' value='accelerated' onchange='growthCbChange(this)'/> Accelerated</p>
+          <p><input type='checkbox' name='growth-checkbox' value='delayed' onchange='growthCbChange(this)'/> Delayed</p>
         </div>
       </div>
         <p><input type='submit' value='Calculate predicted height' /></p>
       </form>
 
       <script>
-      function ValidGenderSelect()
-      {
+      function genderCbChange(obj) {
         var checkboxes = document.getElementsByName('gender-checkbox');
-        var numOfCheckedItems = 0;
         for(var i = 0; i < checkboxes.length; i++)
         {
-            if(checkboxes[i].checked)
-            numOfCheckedItems++;
+            checkboxes[i].checked = false
         }
-            if(numOfCheckedItems > 1)
-        {
-            alert('You may only choose one');
-            return false;
-        }
+        obj.checked = true
       }
 
-      function ValidGrowthSelect()
-      {
+      function growthCbChange(obj) {
         var checkboxes = document.getElementsByName('growth-checkbox');
-        var numOfCheckedItems = 0;
         for(var i = 0; i < checkboxes.length; i++)
         {
-            if(checkboxes[i].checked)
-            numOfCheckedItems++;
+            checkboxes[i].checked = false
         }
-            if(numOfCheckedItems > 1)
-        {
-            alert('You may only choose one');
-            return false;
-        }
+        obj.checked = true
       }
       </script>
 
