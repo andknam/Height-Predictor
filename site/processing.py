@@ -34,7 +34,7 @@ def get_growth_type(chronological_year, chronological_month, skeletal_year, skel
             age_key = chronological_in_months
         elif 21 < chronological_in_months < 57:
             age_key = get_closest(chronological_year, chronological_month)
-        elif 57 <= chronological_year <= 204:
+        elif 57 <= chronological_in_months <= 204:
             age_key = chronological_year * 12
         else:
             return 'chronological_high'
@@ -57,7 +57,7 @@ def get_growth_type(chronological_year, chronological_month, skeletal_year, skel
             age_key = chronological_in_months
         if 21 < chronological_in_months < 57:
             age_key = get_closest(chronological_year, chronological_month)
-        if 57 <= chronological_year <= 16:
+        if 57 <= chronological_in_months <= 192:
             age_key = chronological_year * 12
         else:
             return 'chronological_old'
@@ -197,7 +197,7 @@ def get_prediction_info(recent_height, chronological_year, chronological_month, 
 
             lowest_skeletal = skeletal_list[0][0]
             dash_index1 = lowest_skeletal.find('-')
-            lowest_skeletal = int(lowest_skeletal[:dash_index1])
+            lowest_skeletal_year = int(lowest_skeletal[:dash_index1])
 
             tallest_skeletal = skeletal_list[0][len(skeletal_list[0]) - 1]
             dash_index2 = tallest_skeletal.find('-')
@@ -219,7 +219,7 @@ def get_prediction_info(recent_height, chronological_year, chronological_month, 
     tallest_height = int(max(keys))
 
     # check if value is in the table
-    if skeletal_year < lowest_skeletal:
+    if skeletal_year < lowest_skeletal_year:
         return ['skeletal_index_young']
     if skeletal_year > tallest_skeletal_year:
         return ['skeletal_index_old']
@@ -232,10 +232,8 @@ def get_prediction_info(recent_height, chronological_year, chronological_month, 
 
     # get skeletal input
     skeletal_input = get_skeletal_input(skeletal_year, skeletal_month, sheet_info[1])
-    print(sheet_info[1])
 
     # get the predicted height value
-    print(skeletal_list[0])
     skeletal_index = skeletal_list[0].index(skeletal_input)
     p_height_in_inch = height_dict[recent_height][skeletal_index]
 
