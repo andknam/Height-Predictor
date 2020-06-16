@@ -9,6 +9,7 @@ skeletal_index_old = 'Sorry, that bone age is too old.'
 height_index_low = 'Sorry, that height is too low for the bone age.'
 height_index_tall = 'Sorry, that height is too tall for the bone age.'
 
+chronological_young = 'Sorry, that chronological age is too young.'
 chronological_old = 'Sorry, that chronological age is too old.'
 
 no_match = 'There were no matches in the reference tables. Please try again.'
