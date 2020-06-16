@@ -31,7 +31,7 @@ def get_growth_type(chronological_year, chronological_month, skeletal_year, skel
     if gender == 'male':
         # getting the age key for variablity dictionary
         if chronological_in_months <= 21:
-            age_key = chronological_in_months
+            return 'chronological_young'
         elif 21 < chronological_in_months < 57:
             age_key = get_closest(chronological_year, chronological_month)
         elif 57 <= chronological_in_months <= 204:
@@ -54,7 +54,7 @@ def get_growth_type(chronological_year, chronological_month, skeletal_year, skel
     else:
         # getting the age key for variablity dictionary
         if chronological_in_months <= 21:
-            age_key = chronological_in_months
+            return 'chronological_young'
         if 21 < chronological_in_months < 57:
             age_key = get_closest(chronological_year, chronological_month)
         if 57 <= chronological_in_months <= 192:
