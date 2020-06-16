@@ -69,6 +69,9 @@ def form_page():
                 elif prediction_info[0] == 'height_index_tall':
                     response = responses.height_index_tall
                     return render_template('error_response.html', response=response)
+                elif prediction_info[0] == 'chronological_young':
+                    response = responses.chronological_young
+                    return render_template('error_response.html', response=response)
                 elif prediction_info[0] == 'chronological_old':
                     response = responses.chronological_old
                     return render_template('error_response.html', response=response)
