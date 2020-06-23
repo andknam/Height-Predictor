@@ -19,8 +19,7 @@
     /* Create right column */
     float: left;
     width: 750px;
-    height: 535px;
-    border-left: 2px solid black;
+    height: 300px;
     }
     /* Clear floats after the columns */
     .row:after {
@@ -55,26 +54,43 @@
           <p><span style='text-decoration: underline;'>Gender</span>:</p>
           <p><input type='checkbox' name='gender-checkbox' value='male' onchange='genderCbChange(this)'/>Male</p>
           <p><input type='checkbox' name='gender-checkbox' value='female' onchange='genderCbChange(this)'/>Female</p>
+
+          <p><span style='text-decoration: underline;'>Growth Type Calculation</span>:</p>
+          <p><input type='checkbox' name='growth-type-checkbox' value='brush' onchange='growthCbChange(this)'/>Brush Foundation Means +/- 2SD</p>
+          <p><input type='checkbox' name='growth-type-checkbox' value='one-year' onchange='growthCbChange(this)'/>1 Year from Chronological Age</p>
+
         <p><input type='submit' value='Calculate predicted height' /></p>
         </form>
-      </div>
         <div class='column2'>
-          <h4>&emsp;<u>How this application works:</u></h4>
+          <h4><u>How this application works:</u></h4>
           <ol>
             <li>User inputs all of the information</li>
             <p></p>
             <li>Skeletal Age growth type calculated based on user's Chronological Age (C.A) and Skeletal Age (S.A)</li>
+                <p></p>
+                <u>Brush Foundation:</u>
+                <p></p>
                 <ul>
-                    <p></p>
                     <li>S.A <b>within</b> 2 standard deviations of the C.A = <b>normal</b></li>
                     <p></p>
                     <li>S.A <b>less than</b> 2 standard deviations from the C.A = <b>delayed</b></li>
                     <p></p>
                     <li>S.A <b>more than</b> 2 standard deviations from the C.A = <b>accelerated</b></li>
                 </ul>
+                <p></p>
+                <u>One Year:</u>
+                <p></p>
+                <ul>
+                    <li>S.A <b>within</b> 12 months of the C.A = <b>normal</b></li>
+                    <p></p>
+                    <li>S.A <b>less than</b> 12 months from the C.A = <b>delayed</b></li>
+                    <p></p>
+                    <li>S.A <b>more than</b> 12 months from the C.A = <b>accelerated</b></li>
+                </ul>
             <p></p>
             <li>Gender and Skeletal Age growth type used to find correct Google Sheets height prediction table</li>
-            <a href="https://docs.google.com/spreadsheets/d/1fOM_Hntn5P9DXMg4o_rzHxrWJSM_MEwCXgiosloYCqY/edit#gid=0">(tables can be found here!)</a>
+            <a href="https://docs.google.com/spreadsheets/d/1fOM_Hntn5P9DXMg4o_rzHxrWJSM_MEwCXgiosloYCqY/edit#gid=0" target="_blank">
+                (tables can be found here!)</a>
             <p></p>
             <li>Height and Skeletal Age used to parse table for height prediction and percent of mature height</li>
             <p></p>
@@ -85,6 +101,15 @@
       <script>
       function genderCbChange(obj) {
         var checkboxes = document.getElementsByName('gender-checkbox');
+        for(var i = 0; i < checkboxes.length; i++)
+        {
+            checkboxes[i].checked = false
+        }
+        obj.checked = true
+      }
+
+      function growthCbChange(obj) {
+        var checkboxes = document.getElementsByName('growth-type-checkbox');
         for(var i = 0; i < checkboxes.length; i++)
         {
             checkboxes[i].checked = false
