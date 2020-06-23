@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <style>
+            p {text-align: center;}
+
+            p.blocktext {
+                margin-left: auto;
+                margin-right: auto;
+                width: 550px;
+            }
+        </style>
+    </head>
+
+  <body>
+    <p>Height: {{rh}} inches</p>
+    <p>Current Age: {{cy}} years and {{cm}} months</p>
+    <p>Skeletal Age: {{sy}} years and {{sm}} months</p>
+    <p>This Skeletal Age is {{gt}} (using 12 months from Chronological Age).</p>
+    <p>{{p}}'s predicted height is about {{ph}}.</p>
+    <p>He has completed {{pm}}% of his growth!</p>
+    <p><img src="/static/boy_giraffe.png" style="width:150px;height:200px;"></p>
+
+    <p><a href="/">Click here to make another height prediction!</a></p>
+    <p><a href="https://docs.google.com/spreadsheets/d/1fOM_Hntn5P9DXMg4o_rzHxrWJSM_MEwCXgiosloYCqY/edit#gid=0" target="_blank">
+        See growth reference tables</a></p>
+
+    <p><button onclick="copyPatientInfo()">Copy text for note!</button></p>
+    <p class="blocktext" id="patientInfo">
+    "I personally interpreted the skeletal age as {{sy}} years {{sm}} months (using 12 months from chronological age).
+    This skeletal age is {{gt}} based on his current age of {{cy}} years {{cm}} months. The adult height prediction
+    is {{ph}} inches and he has apparently completed {{pm}}% of his growth."</p>
+
+  </body>
+
+  <script>
+    // Create temporary text area and append to page, add content into text area
+    // Copy text from text area, then remove the text area
+    function copyPatientInfo() {
+        var copyText = document.getElementById("patientInfo");
+        var textArea = document.createElement("textarea");
+        textArea.value = copyText.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("Copy");
+        textArea.remove();
+    }
+  </script>
+
+</html>
