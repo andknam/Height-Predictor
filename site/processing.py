@@ -6,9 +6,9 @@ def get_one_year_growth_type(chronological_year, chronological_month, skeletal_y
     chronological_in_months = (chronological_year * 12) + chronological_month
     skeletal_in_months = (skeletal_year * 12) + skeletal_month
 
-    if (chronological_in_months + 12) > skeletal_in_months:
+    if (chronological_in_months + 12) < skeletal_in_months:
         return ['accelerated']
-    elif (chronological_in_months - 12) < skeletal_in_months:
+    elif (chronological_in_months - 12) > skeletal_in_months:
         return ['delayed']
     else:
         return ['normal']
