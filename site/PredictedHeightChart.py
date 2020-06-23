@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from processing import get_prediction_info
+from processing import get_prediction_info, get_brush_growth_type, get_one_year_growth_type
 import responses
 
 app = Flask(__name__)
@@ -17,6 +17,7 @@ def form_page():
             skeletal_year = None
             skeletal_month = None
             gender = request.form['gender-checkbox']
+            selected_growth_type = request.form['growth-type-checkbox']
 
             #try-except for height_input
             try:
@@ -49,7 +50,12 @@ def form_page():
                 errors += '{!r} is not a number.\n'.format(request.form['chronological_month_input'])
 
             if len(errors) == 0:
-                prediction_info = get_prediction_info(recent_height, chronological_year, chronological_month, skeletal_year, skeletal_month, gender)
+                if selected_growth_type == 'brush':
+                    growth_type = get_brush_growth_type(chronological_year, chronological_month, skeletal_year, skeletal_month, gender)
+                else:
+                    growth_type = get_one_year_growth_type(chronological_year, chronological_month, skeletal_year, skeletal_month)
+
+                prediction_info = get_prediction_info(recent_height, skeletal_year, skeletal_month, gender, growth_type[0])
 
                 if prediction_info[0] == 'skeletal_low':
                     response = responses.skeletal_low
@@ -79,18 +85,29 @@ def form_page():
                 else:
                     ph = prediction_info[0]
                     pm = prediction_info[1]
+                    gt = growth_type[0]
 
                     rh = recent_height
+                    cy = chronological_year
+                    cm = chronological_month
                     sy = skeletal_year
                     sm = skeletal_month
                     p = patient
 
                     if gender == 'male':
-                        return render_template('valid_male_response.html', rh=rh, sy=sy, sm=sm, p=p, ph=ph, pm=pm)
+                        if selected_growth_type == 'brush':
+                            sd = growth_type[1]
+                            return render_template('valid_male_brush_response.html', rh=rh, cy=cy, cm=cm, sy=sy, sm=sm, gt=gt, sd=sd, p=p, ph=ph, pm=pm)
+                        else:
+                            return render_template('valid_male_one_year_response.html', rh=rh, cy=cy, cm=cm, sy=sy, sm=sm, gt=gt, p=p, ph=ph, pm=pm)
                     else:
-                        return render_template('valid_female_response.html', rh=rh, sy=sy, sm=sm, p=p, ph=ph, pm=pm)
+                        if selected_growth_type == 'brush':
+                            sd = growth_type[1]
+                            return render_template('valid_female_brush_response.html', rh=rh, cy=cy, cm=cm, sy=sy, sm=sm, gt=gt, sd=sd, p=p, ph=ph, pm=pm)
+                        else:
+                            return render_template('valid_female_one_year_response.html', rh=rh, cy=cy, cm=cm, sy=sy, sm=sm, gt=gt, p=p, ph=ph, pm=pm)
 
     except:
         errors += 'Something went wrong :( Please reload the page and try again'
-        
+
     return render_template('form_page.html', errors=errors)
