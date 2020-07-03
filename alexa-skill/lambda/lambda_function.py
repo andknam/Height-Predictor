@@ -115,8 +115,8 @@ class PatientInfoIntentHandler(AbstractRequestHandler):
             # usage of dynamodb table commented out for now 
             #dynamodb = boto3.resource('dynamodb',
             #              region_name = 'us-east-1',
-            #              aws_access_key_id = 'AKIA5DGMHLM6467PSYHH',
-            #              aws_secret_access_key = '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')
+            #              aws_access_key_id = 'access-key',
+            #              aws_secret_access_key = 'secret-access-key')
             #              
             #dynamo_client = DynamoDbAdapter(table_name = 'Patient_Information',
             #                    partition_key_name = 'user_id',  # the ID you choose while creating the table
