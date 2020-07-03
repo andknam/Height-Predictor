@@ -25,4 +25,3 @@ The accompanying proof-of-concept web application can be found [here!](http://an
 - [x] (added 6/19/2020) added chronological age for automatic skeletal growth type calculation
 - [x] (added 6/19/2020) copy button that allows height prediction note to be copied to clipboard
 - [x] (added 6/23/2020) added choice between brush foundations means and one year from chronological age 
-- [x] (7/2/2020) modified responses
