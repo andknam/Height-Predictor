@@ -8,7 +8,9 @@ from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.dispatch_components import AbstractExceptionHandler
 from ask_sdk_core.handler_input import HandlerInput
 
-from processing import get_prediction_info
+from ask_sdk_model import Response
+
+from processing import get_prediction_info, get_brush_growth_type, get_one_year_growth_type
 import responses
 
 from ask_sdk_dynamodb.adapter import DynamoDbAdapter, user_id_partition_keygen
@@ -46,59 +48,94 @@ class PatientInfoIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
+        
+        # retrieving all slot values 
         slots = handler_input.request_envelope.request.intent.slots
         patient_name = slots['name'].value
-        gender = slots['gender'].value
         recent_height = slots['height'].value
-        growth_type = slots['growth_type'].value
+        chronological_year = int(slots['chronological_year'].value)
+        chronological_month = int(slots['chronological_month'].value)
         skeletal_year = slots['skeletal_year'].value
         skeletal_month = slots['skeletal_month'].value
-        
-        prediction_info = get_prediction_info(gender, recent_height, growth_type, skeletal_year, skeletal_month)
-        
-        if prediction_info[0] == 'skeletal_low':
-            speak_output = responses.skeletal_low
-        elif prediction_info[0] == 'skeletal_high':
-            speak_output = responses.skeletal_high
-        elif prediction_info[0] == 'skeletal_index_young':
-            speak_output = responses.skeletal_index_young
-        elif prediction_info[0] == 'skeletal_index_old':
-            speak_output = responses.skeletal_index_old
-        elif prediction_info[0] == 'height_index_low':
-            speak_output = responses.height_index_low
-        elif prediction_info[0] == 'height_index_tall':
-            speak_output = responses.height_index_tall
+        gender = slots['gender'].value
+        selected_growth_type = slots['growth_type'].value
+
+        # getting the growth type 
+        if selected_growth_type == 'brush':
+            growth_type = get_brush_growth_type(chronological_year, chronological_month, skeletal_year, skeletal_month, gender)
         else:
-            predicted_height = prediction_info[0]
-            percent_of_mature = prediction_info[1]
+            growth_type = get_one_year_growth_type(chronological_year, chronological_month, skeletal_year, skeletal_month)
+
+        prediction_info = get_prediction_info(recent_height, skeletal_year, skeletal_month, gender, growth_type[0])
+
+        # error responses
+        if prediction_info[0] == 'skeletal_low':
+            response = responses.skeletal_low
+        elif prediction_info[0] == 'skeletal_high':
+            response = responses.skeletal_high
+        elif prediction_info[0] == 'skeletal_index_young':
+            response = responses.skeletal_index_young
+        elif prediction_info[0] == 'skeletal_index_old':
+            response = responses.skeletal_index_old
+        elif prediction_info[0] == 'height_index_low':
+            response = responses.height_index_low
+        elif prediction_info[0] == 'height_index_tall':
+            response = responses.height_index_tall
+        elif prediction_info[0] == 'chronological_young':
+            response = responses.chronological_young
+        elif prediction_info[0] == 'chronological_old':
+            response = responses.chronological_old
+        else:
+            ph = prediction_info[0]
+            pm = prediction_info[1]
             
-            output = "Based on their current height of {} inches and their skeletal age of {} years and {} months, {}'s predicted \
-            height is about {}. ".format(recent_height, skeletal_year, skeletal_month, patient_name, predicted_height)
-            output_cont = 'They have completed {}% of their growth!'.format(percent_of_mature)
-            speak_output = output + output_cont
-                                
-            dynamodb = boto3.resource('dynamodb',
-                          region_name = 'region',
-                          aws_access_key_id = 'access-key',
-                          aws_secret_access_key = 'secret-access-key')
-                          
-            dynamo_client = DynamoDbAdapter(table_name = 'table-name',
-                                partition_key_name = 'user_id',  # the ID you choose while creating the table
-                                partition_keygen = user_id_partition_keygen,
-                                create_table = False,  # default
-                                dynamodb_resource = dynamodb) 
+            gt = growth_type[0]
+
+            rh = recent_height
+            cy = str(chronological_year)
+            cm = str(chronological_month)
+            sy = skeletal_year
+            sm = skeletal_month
+            p = patient_name
+            
+            # speak output based on gender and growth type 
+            if gender == 'male':
+                if selected_growth_type == 'brush':
+                    sd = growth_type[1]
+                    speak_output = responses.male_brush.format(sy, sm, gt, cy, cm, sd, ph, pm)
+                else:
+                    speak_output = responses.male_one_year.format(sy, sm, gt, cy, cm, ph, pm)
+            else:
+                if selected_growth_type == 'brush':
+                    sd = growth_type[1]
+                    speak_output = responses.female_brush.format(sy, sm, gt, cy, cm, sd, ph, pm)
+                else:
+                    speak_output = responses.female_one_year.format(sy, sm, gt, cy, cm, ph, pm)
+                    
+            # usage of dynamodb table commented out for now 
+            #dynamodb = boto3.resource('dynamodb',
+            #              region_name = 'us-east-1',
+            #              aws_access_key_id = 'AKIA5DGMHLM6467PSYHH',
+            #              aws_secret_access_key = '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')
+            #              
+            #dynamo_client = DynamoDbAdapter(table_name = 'Patient_Information',
+            #                    partition_key_name = 'user_id',  # the ID you choose while creating the table
+            #                    partition_keygen = user_id_partition_keygen,
+            #                    create_table = False,  # default
+            #                    dynamodb_resource = dynamodb) 
                                 
             # Store attributes for the user
-            attr = {
-            'patient_name': patient_name,
-            'predicted_height_message': speak_output, 
-            'gender': gender,
-            'recent_height': recent_height,
-            'growth_type': growth_type,
-            'skeletal_age': str(skeletal_year) + '-' + str(skeletal_month)
-            }
+            #attr = {
+            #'patient_name': patient_name,
+            #'predicted_height_message': speak_output, 
+            #'gender': gender,
+            #'recent_height': recent_height,
+            #'growth_type': growth_type,
+            #'skeletal_age': str(skeletal_year) + '-' + str(skeletal_month)
+            #'chronological_age': str(chronological_year) + '-' + str(chronological_month)
+            #}
             
-            dynamo_client.save_attributes(request_envelope = handler_input.request_envelope, attributes = attr)
+            #dynamo_client.save_attributes(request_envelope = handler_input.request_envelope, attributes = attr)
 
         return (
             handler_input.response_builder
