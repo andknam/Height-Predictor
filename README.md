@@ -17,6 +17,7 @@ The accompanying proof-of-concept web application can be found [here!](http://an
 - [x] (v1 added 5/25/2020) parse out the input values from a single utterance, rather than asking the user for input values one by one
 - [x] (added 6/5/2020) store patient information in database 
 - [x] (added 6/5/2020) make sure parsing values are in the table
+- [x] (7/2/2020) began migrating web app features over to Alexa Skill
 
 **Web App Features:**
 - [x] (added 6/9/2020) automatically unchecks checkbox when a different checkbox is selected
@@ -24,3 +25,4 @@ The accompanying proof-of-concept web application can be found [here!](http://an
 - [x] (added 6/19/2020) added chronological age for automatic skeletal growth type calculation
 - [x] (added 6/19/2020) copy button that allows height prediction note to be copied to clipboard
 - [x] (added 6/23/2020) added choice between brush foundations means and one year from chronological age 
+- [x] (7/2/2020) modified responses
