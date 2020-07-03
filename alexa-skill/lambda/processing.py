@@ -1,6 +1,94 @@
 import csv
 from urllib import request
 
+# returns growth type based on one year from chronological age
+def get_one_year_growth_type(chronological_year, chronological_month, skeletal_year, skeletal_month):
+    chronological_in_months = (chronological_year * 12) + chronological_month
+    skeletal_in_months = (int(skeletal_year) * 12) + int(skeletal_month)
+
+    if (chronological_in_months + 12) < skeletal_in_months:
+        return ['accelerated']
+    elif (chronological_in_months - 12) > skeletal_in_months:
+        return ['delayed']
+    else:
+        return ['normal']
+
+# getting the age index for a unique range
+def get_closest(chronological_year, chronological_month):
+    if chronological_month <= 3:
+        return chronological_year * 12
+    elif 3 < chronological_month <= 9:
+        return (chronological_year * 12) + 6
+    else:
+        return (chronological_year * 12) + 12
+
+# growth type based on the standard deviation
+def standard_dev(chronological_in_months, skeletal_in_months, sd):
+    two_sd_low = int(chronological_in_months - (2 * sd))
+    two_sd_high = int(chronological_in_months + (2 * sd))
+
+    if skeletal_in_months < two_sd_low:
+        return 'delayed'
+    elif two_sd_low <= skeletal_in_months <= two_sd_high:
+        return 'normal'
+    else:
+        return 'accelerated'
+
+# returns growth type based on standard deviations from skeletal age (brush foundation means)
+def get_brush_growth_type(chronological_year, chronological_month, skeletal_year, skeletal_month, gender):
+
+    chronological_in_months = (chronological_year * 12) + chronological_month
+    skeletal_in_months = (int(skeletal_year) * 12) + int(skeletal_month)
+
+    if gender == 'male':
+        # getting the age key for variablity dictionary
+        # return chronological young for now (maybe younger height tables will be introduced)
+        if chronological_in_months <= 21:
+            return 'chronological_young'
+        elif 21 < chronological_in_months < 57:
+            age_key = get_closest(chronological_year, chronological_month)
+        elif 57 <= chronological_in_months <= 204:
+            age_key = chronological_year * 12
+        else:
+            return 'chronological_old'
+
+        # used to get standard deviation for specific chronological age (in months)
+        # format: chronological_in_months : [standard deviation]
+        boy_variability = {3:[0.69], 6:[1.13], 9:[1.43], 12:[1.97], 18:[3.52],
+                            24:[3.92], 30:[4.52], 36:[5.08], 42:[5.40], 48:[6.66],
+                            54:[8.36], 60:[8.79], 72:[9.17], 84:[8.91], 96:[9.10],
+                            108:[9.00], 120:[9.79], 132:[10.09], 144:[10.38],
+                            156:[10.44], 168:[10.72], 180:[11.32], 192:[12.86], 204:[13.05]}
+
+        sd = boy_variability[age_key][0]
+
+        growth_type = standard_dev(chronological_in_months, skeletal_in_months, sd)
+
+    else:
+        # getting the age key for variablity dictionary
+        if chronological_in_months <= 21:
+            return 'chronological_young'
+        if 21 < chronological_in_months < 57:
+            age_key = get_closest(chronological_year, chronological_month)
+        if 57 <= chronological_in_months <= 192:
+            age_key = chronological_year * 12
+        else:
+            return 'chronological_old'
+
+        # used to get standard deviation for specific chronological age (in months)
+        # format: chronological_in_months : [standard deviation]
+        girl_variability = {3:[0.72], 6:[1.16], 9:[1.36], 12:[1.77], 18:[3.49],
+                            24:[4.64], 30:[5.37], 36:[5.97], 42:[7.48], 48:[8.98],
+                            54:[10.73], 60:[11.65], 72:[10.23], 84:[9.64], 96:[10.23],
+                            108:[10.74], 120:[11.73], 132:[11.94], 144:[10.24],
+                            156:[10.67], 168:[11.30], 180:[9.23], 192:[7.31]}
+
+        sd = girl_variability[age_key][0]
+
+        growth_type = standard_dev(chronological_in_months, skeletal_in_months, sd)
+
+    return [growth_type, 2 * sd]
+
 # returns google sheet gid based on input values
 def get_sheet_info(gender, growth_type, skeletal_year):
     base_sheet = 'https://docs.google.com/spreadsheets/d/1fOM_Hntn5P9DXMg4o_rzHxrWJSM_MEwCXgiosloYCqY/export?format=csv&gid='
@@ -88,10 +176,13 @@ def get_skeletal_input(skeletal_year, skeletal_month, sheet_gid):
     return skeletal_input
 
 # based on the patient gender and age, get the prediction information
-def get_prediction_info(gender, recent_height, growth_type, skeletal_year, skeletal_month):
+def get_prediction_info(recent_height, skeletal_year, skeletal_month, gender, growth_type):
 
     skeletal_year = int(skeletal_year)
     skeletal_month = int(skeletal_month)
+
+    if growth_type == 'chronological_old':
+        return ['chronological_old']
 
     # based on gender and skeletal age, choose correct sheet_gid
     sheet_info = get_sheet_info(gender, growth_type, skeletal_year)
@@ -115,10 +206,15 @@ def get_prediction_info(gender, recent_height, growth_type, skeletal_year, skele
         # first row holds skeletal age values
         if row_num == 0:
             skeletal_list.append(row[2:])
-            lowest_skeletal = int(skeletal_list[0][0][:len(str(skeletal_year))])
+
+            lowest_skeletal = skeletal_list[0][0]
+            dash_index1 = lowest_skeletal.find('-')
+            lowest_skeletal_year = int(lowest_skeletal[:dash_index1])
+
             tallest_skeletal = skeletal_list[0][len(skeletal_list[0]) - 1]
-            dash_index = tallest_skeletal.find('-')
-            tallest_skeletal = int(tallest_skeletal[:dash_index])
+            dash_index2 = tallest_skeletal.find('-')
+            tallest_skeletal_year = int(tallest_skeletal[:dash_index2])
+            tallest_skeletal_month = int(tallest_skeletal[dash_index2:])
         # second row holds percent of mature height values
         elif row_num == 1:
             key, value = row[1], row[2:]
@@ -135,10 +231,13 @@ def get_prediction_info(gender, recent_height, growth_type, skeletal_year, skele
     tallest_height = int(max(keys))
 
     # check if value is in the table
-    if skeletal_year < lowest_skeletal:
+    if skeletal_year < lowest_skeletal_year:
         return ['skeletal_index_young']
-    if skeletal_year > tallest_skeletal:
+    if skeletal_year > tallest_skeletal_year:
         return ['skeletal_index_old']
+    if skeletal_year == tallest_skeletal_year:
+        if skeletal_month > tallest_skeletal_month:
+            return ['skeletal_index_old']
     if int(recent_height) < lowest_height:
         return ['height_index_low']
     if int(recent_height) > tallest_height:
