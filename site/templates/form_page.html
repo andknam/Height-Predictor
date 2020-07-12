@@ -31,35 +31,35 @@
   </style>
   </head>
 
-  <body>
+  <body onload='checkForm()'>
     {{errors}}
     <form method='post' action='.'>
       <div class='row'>
         <div class='column'>
           <p><h3> HeightPredictor! Proof of Concept</h3>
           <p>Patient (name):</p>
-          <p><input name='patient_input' type='text' /></p>
+          <p><input name='patient_input' type='text' required/></p>
 
           <p>Height (inches):</p>
-          <p><input name='height_input' type='text' maxlength='3'/></p>
+          <p><input name='height_input' type='text' maxlength='3'required/></p>
 
           <p>Chronological Age (years - months):</p>
-          <p><input name='chronological_year_input' type='text' size='8' maxlength='2'/>&nbsp;-
-          <input name='chronological_month_input' type='text' size='8' maxlength='2'/></p>
+          <p><input name='chronological_year_input' type='text' size='8' maxlength='2' required/>&nbsp;-
+          <input name='chronological_month_input' type='text' size='8' maxlength='2'required/></p>
 
           <p>Skeletal Age (years - months):</p>
-          <p><input name='skeletal_year_input' type='text' size='8' maxlength='2'/>&nbsp;-
-          <input name='skeletal_month_input' type='text' size='8' maxlength='2'/></p>
+          <p><input name='skeletal_year_input' type='text' size='8' maxlength='2' required/>&nbsp;-
+          <input name='skeletal_month_input' type='text' size='8' maxlength='2' required/></p>
 
           <p><span style='text-decoration: underline;'>Gender</span>:</p>
-          <p><input type='checkbox' name='gender-checkbox' value='male' onchange='genderCbChange(this)'/>Male</p>
-          <p><input type='checkbox' name='gender-checkbox' value='female' onchange='genderCbChange(this)'/>Female</p>
+          <p><input name='gender-checkbox' type='checkbox' value='male' id='geCheck1' onchange='genderCbChange(this)' onclick='checkForm()'/>Male</p>
+          <p><input name='gender-checkbox' type='checkbox' value='female' id='geCheck2' onchange='genderCbChange(this)' onclick='checkForm()'/>Female</p>
 
           <p><span style='text-decoration: underline;'>Growth Type Calculation</span>:</p>
-          <p><input type='checkbox' name='growth-type-checkbox' value='brush' onchange='growthCbChange(this)'/>Brush Foundation Means +/- 2SD</p>
-          <p><input type='checkbox' name='growth-type-checkbox' value='one-year' onchange='growthCbChange(this)'/>1 Year from Chronological Age</p>
+          <p><input name='growth-type-checkbox' type='checkbox' value='brush' id='grCheck1' onchange='growthCbChange(this)' onclick='checkForm()'/>Brush Foundation Means +/- 2SD</p>
+          <p><input name='growth-type-checkbox' type='checkbox' value='one-year' id='grCheck2' onchange='growthCbChange(this)' onclick='checkForm()'/>1 Year from Chronological Age</p>
 
-        <p><input type='submit' value='Calculate predicted height' /></p>
+          <button type='submit' id='submitbutton'/>Calculate predicted height</button>
         </form>
         <div class='column2'>
           <h4><u>How this application works:</u></h4>
@@ -98,24 +98,48 @@
           </ol>
       </div>
       </div>
-      <script>
-      function genderCbChange(obj) {
-        var checkboxes = document.getElementsByName('gender-checkbox');
-        for(var i = 0; i < checkboxes.length; i++)
-        {
-            checkboxes[i].checked = false
+    <script>
+        /* Uncheck checkbox if other checkbox is chosen */
+        function genderCbChange(obj) {
+            var checkboxes = document.getElementsByName('gender-checkbox');
+            for(var i = 0; i < checkboxes.length; i++)
+            {
+                checkboxes[i].checked = false;
+            }
+            obj.checked = true;
         }
-        obj.checked = true
-      }
 
-      function growthCbChange(obj) {
-        var checkboxes = document.getElementsByName('growth-type-checkbox');
-        for(var i = 0; i < checkboxes.length; i++)
-        {
-            checkboxes[i].checked = false
+        /* Uncheck checkbox if other checkbox is chosen */
+        function growthCbChange(obj) {
+            var checkboxes = document.getElementsByName('growth-type-checkbox');
+            for(var i = 0; i < checkboxes.length; i++)
+            {
+                checkboxes[i].checked = false;
+            }
+            obj.checked = true;
         }
-        obj.checked = true
-      }
+
+        /* Disable submit button until checkboxes have been checked */
+        function checkForm() {
+            var male = document.getElementById('geCheck1');
+            var female = document.getElementById('geCheck2');
+            var brush = document.getElementById('grCheck1');
+            var one_year = document.getElementById('grCheck2');
+            var cansubmit = true;
+
+            if (male.checked == false && female.checked == false) {
+                cansubmit = false;
+            } else {
+                cansubmit = true;
+            }
+
+            if (brush.checked == false && one_year.checked == false) {
+                cansubmit = false;
+            } else {
+                cansubmit = true;
+            }
+            document.getElementById('submitbutton').disabled = !cansubmit;
+        }
       </script>
 
     </body>
