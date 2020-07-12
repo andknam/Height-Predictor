@@ -18,6 +18,7 @@ The accompanying proof-of-concept web application can be found [here!](http://an
 - [x] (added 6/5/2020) store patient information in database 
 - [x] (added 6/5/2020) make sure parsing values are in the table
 - [x] (7/2/2020) began migrating web app features over to Alexa Skill
+- [x] (added 7/11/2020) required form fields, submit button disabled until checkboxes checked, minor height prediction note formatting
 
 **Web App Features:**
 - [x] (added 6/9/2020) automatically unchecks checkbox when a different checkbox is selected
