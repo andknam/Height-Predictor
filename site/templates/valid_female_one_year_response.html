@@ -9,6 +9,16 @@
                 margin-right: auto;
                 width: 550px;
             }
+
+            div.a {
+                text-align: left;
+            }
+
+            div.blocktext {
+                margin-left: auto;
+                margin-right: auto;
+                width: 550px;
+            }
         </style>
     </head>
 
@@ -26,10 +36,13 @@
         See growth reference tables</a></p>
 
     <p><button onclick="copyPatientInfo()">Copy text for note!</button></p>
-    <p class="blocktext" id="patientInfo">
-    "I personally interpreted the skeletal age as {{sy}} years {{sm}} months (using 12 months from chronological age).
-    This skeletal age is {{gt}} based on her current age of {{cy}} years {{cm}} months. The adult height prediction
-    is {{ph}} inches and she has apparently completed {{pm}}% of her growth."</p>
+    <div class='a'>
+        <div class="blocktext" id="patientInfo">
+            I personally interpreted the skeletal age as {{sy}} years {{sm}} months (using 12 months from chronological age).
+            This skeletal age is {{gt}} based on her current age of {{cy}} years {{cm}} months. The adult height prediction
+            is {{ph}} inches and she has apparently completed {{pm}}% of her growth.
+        </div>
+    </div>
 
   </body>
 
