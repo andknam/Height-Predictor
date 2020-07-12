@@ -12,17 +12,17 @@ The accompanying proof-of-concept web application can be found [here!](http://an
 
 **Alexa Skill Features:**
 - [ ] option to ask for the information of a previously documented patient
-- [x] (added 5/25/2020) add patient gender and age as variables
-- [x] (added 5/25/2020) parse different height prediction tables based on the gender and age variables
-- [x] (v1 added 5/25/2020) parse out the input values from a single utterance, rather than asking the user for input values one by one
-- [x] (added 6/5/2020) store patient information in database 
-- [x] (added 6/5/2020) make sure parsing values are in the table
-- [x] (7/2/2020) began migrating web app features over to Alexa Skill
-- [x] (added 7/11/2020) required form fields, submit button disabled until checkboxes checked, minor height prediction note formatting
+- [x] (5/25/20) add patient gender and age as variables
+- [x] (5/25/20) parse different height prediction tables based on the gender and age variables
+- [x] (5/25/20) parse out the input values from a single utterance, rather than asking the user for input values one by one
+- [x] (6/5/20) store patient information in database 
+- [x] (6/5/20) make sure parsing values are in the table
+- [x] (7/2/20) began migrating web app features over to Alexa Skill
 
 **Web App Features:**
-- [x] (added 6/9/2020) automatically unchecks checkbox when a different checkbox is selected
-- [x] (added 6/9/2020) fixed some processing problems
-- [x] (added 6/19/2020) added chronological age for automatic skeletal growth type calculation
-- [x] (added 6/19/2020) copy button that allows height prediction note to be copied to clipboard
-- [x] (added 6/23/2020) added choice between brush foundations means and one year from chronological age 
+- [x] (6/9/20) automatically unchecks checkbox when a different checkbox is selected
+- [x] (6/9/20) fixed some processing problems
+- [x] (6/19/20) added chronological age for automatic skeletal growth type calculation
+- [x] (6/19/20) copy button that allows height prediction note to be copied to clipboard
+- [x] (6/23/20) added choice between brush foundations means and one year from chronological age 
+- [x] (7/11/20) required form fields, submit button disabled until checkboxes checked, minor height prediction note formatting
