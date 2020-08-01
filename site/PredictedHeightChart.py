@@ -15,8 +15,12 @@ def form_page():
         chronological_month = None
         skeletal_year = None
         skeletal_month = None
-        gender = None
+        gender = request.form['gender-checkbox']
         selected_growth_type = request.form['growth-type-checkbox']
+
+        #placeholder for no patient name
+        if len(patient) == 0:
+            patient = 'This patient'
 
         #try-except for height_input
         try:
@@ -32,7 +36,10 @@ def form_page():
 
         #try-except for skeletal_month_input
         try:
-            skeletal_month = int(request.form['skeletal_month_input'])
+            if len(request.form['skeletal_month_input']) == 0:
+                skeletal_month = 0
+            else:
+                skeletal_month = int(request.form['skeletal_month_input'])
         except:
             errors += '{!r} is not a number.\n'.format(request.form['skeletal_month_input'])
 
@@ -44,7 +51,10 @@ def form_page():
 
         #try-except for chronological_month_input
         try:
-            chronological_month = int(request.form['chronological_month_input'])
+            if len(request.form['chronological_month_input']) == 0:
+                chronological_month = 0
+            else:
+                chronological_month = int(request.form['chronological_month_input'])
         except:
             errors += '{!r} is not a number.\n'.format(request.form['chronological_month_input'])
 
