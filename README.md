@@ -26,3 +26,4 @@ The accompanying proof-of-concept web application can be found [here!](http://an
 - [x] (6/19/20) copy button that allows height prediction note to be copied to clipboard
 - [x] (6/23/20) added choice between brush foundations means and one year from chronological age 
 - [x] (7/11/20) required form fields, submit button disabled until checkboxes checked, minor height prediction note formatting
+- [x] (7/31/20) months field left blank set to 0 and collapsible button added
