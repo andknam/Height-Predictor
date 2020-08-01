@@ -9,17 +9,12 @@
   * {
     box-sizing: border-box;
     }
+
     .column {
     /* Create left column */
     float: left;
     width: 350px;
     height: 475px;
-    }
-    .column2{
-    /* Create right column */
-    float: left;
-    width: 750px;
-    height: 300px;
     }
     /* Clear floats after the columns */
     .row:after {
@@ -27,6 +22,28 @@
     display: table;
     clear: both;
     }
+
+    /* Create collapsible button*/
+    .collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    width: 575px;
+    border: none;
+    text-align: center;
+    outline: none;
+    font-size: 15px;
+    }
+    .active, .collapsible:hover {
+    background-color: #555;
+    }
+    .content {
+    display: none;
+    padding: 10px;
+    width: 575px;
+    overflow: hidden;
+    background-color: #f1f1f1;
     }
   </style>
   </head>
@@ -38,18 +55,18 @@
         <div class='column'>
           <p><h3> HeightPredictor! Proof of Concept</h3>
           <p>Patient (name):</p>
-          <p><input name='patient_input' type='text' required/></p>
+          <p><input name='patient_input' type='text'/></p>
 
           <p>Height (inches):</p>
           <p><input name='height_input' type='text' maxlength='3'required/></p>
 
           <p>Chronological Age (years - months):</p>
           <p><input name='chronological_year_input' type='text' size='8' maxlength='2' required/>&nbsp;-
-          <input name='chronological_month_input' type='text' size='8' maxlength='2'required/></p>
+          <input name='chronological_month_input' type='text' size='8' maxlength='2'/></p>
 
           <p>Skeletal Age (years - months):</p>
           <p><input name='skeletal_year_input' type='text' size='8' maxlength='2' required/>&nbsp;-
-          <input name='skeletal_month_input' type='text' size='8' maxlength='2' required/></p>
+          <input name='skeletal_month_input' type='text' size='8' maxlength='2'/></p>
 
           <p><span style='text-decoration: underline;'>Gender</span>:</p>
           <p><input name='gender-checkbox' type='checkbox' value='male' id='geCheck1' onchange='genderCbChange(this)' onclick='checkForm()'/>Male</p>
@@ -60,13 +77,13 @@
           <p><input name='growth-type-checkbox' type='checkbox' value='one-year' id='grCheck2' onchange='growthCbChange(this)' onclick='checkForm()'/>1 Year from Chronological Age</p>
 
           <button type='submit' id='submitbutton'/>Calculate predicted height</button>
+          <p></p>
         </form>
-        <div class='column2'>
-          <h4><u>How this application works:</u></h4>
-          <ol>
-            <li>User inputs all of the information</li>
+        <button type="button" class="collapsible">How this application works (opens below!)</button>
+        <div class="content">
+            <p>1. User inputs all of the information</p>
             <p></p>
-            <li>Skeletal Age growth type calculated based on user's Chronological Age (C.A) and Skeletal Age (S.A)</li>
+            <p>2. Skeletal Age growth type calculated based on user's Chronological Age (C.A) and Skeletal Age (S.A)</p>
                 <p></p>
                 <u>Brush Foundation:</u>
                 <p></p>
@@ -88,18 +105,33 @@
                     <li>S.A <b>more than</b> 12 months from the C.A = <b>accelerated</b></li>
                 </ul>
             <p></p>
-            <li>Gender and Skeletal Age growth type used to find correct Google Sheets height prediction table</li>
+            <p>3. Gender and Skeletal Age growth type used to find correct Google Sheets height prediction table
             <a href="https://docs.google.com/spreadsheets/d/1fOM_Hntn5P9DXMg4o_rzHxrWJSM_MEwCXgiosloYCqY/edit#gid=0" target="_blank">
-                (tables can be found here!)</a>
+                (tables can be found here!)</a></p>
+            <p>Reference: BAYLEY N, PINNEAU SR. Tables for predicting adult height from skeletal age: revised for use with the Greulich-Pyle hand standards.
+            J Pediatr. 1952;40(4):423-441. doi:10.1016/s0022-3476(52)80205-7</p>
             <p></p>
-            <li>Height and Skeletal Age used to parse table for height prediction and percent of mature height</li>
+            <p>4. Height and Skeletal Age used to parse table for height prediction and percent of mature height</p>
             <p></p>
-            <li>Ta-da!</li>
-          </ol>
-      </div>
+            <p>5. Ta-da!</p>
+        </div>
       </div>
     <script>
-        /* Uncheck checkbox if other checkbox is chosen */
+        /* used for activating "how this application works" collapsible */
+        var coll = document.getElementsByClassName("collapsible");
+        for (var i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+
+        /* automatically updates checkbox when selection is changed */
         function genderCbChange(obj) {
             var checkboxes = document.getElementsByName('gender-checkbox');
             for(var i = 0; i < checkboxes.length; i++)
@@ -109,7 +141,7 @@
             obj.checked = true;
         }
 
-        /* Uncheck checkbox if other checkbox is chosen */
+        /* automatically updates checkbox when selection is changed */
         function growthCbChange(obj) {
             var checkboxes = document.getElementsByName('growth-type-checkbox');
             for(var i = 0; i < checkboxes.length; i++)
@@ -119,7 +151,7 @@
             obj.checked = true;
         }
 
-        /* Disable submit button until checkboxes have been checked */
+        /* activates submit button  */
         function checkForm() {
             var male = document.getElementById('geCheck1');
             var female = document.getElementById('geCheck2');
@@ -138,6 +170,7 @@
             } else {
                 cansubmit = true;
             }
+
             document.getElementById('submitbutton').disabled = !cansubmit;
         }
       </script>
