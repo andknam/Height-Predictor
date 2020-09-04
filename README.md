@@ -1,6 +1,6 @@
 # HeightPredictor!
 
-One of the things done frequently in pediatrics is to predict a patient's height based on their growth. This is to determine whether or not a patient's current illness will impact their final growth. However, figuring out predicted height is a cumbersome process involving looking up a value from a dense table. 
+One of the things done frequently in pediatrics is to predict a patient's height based on their growth. This is to determine whether or not a patient's current illness will impact their final growth (height monitoring is used for analyzing endocrine diseases). However, figuring out predicted height is a cumbersome process involving looking up a value from a dense table. 
 
 This is where the HeightPredictor! Alexa skill comes in to play. Users ask Alexa to 'make a height prediction' and Alexa will ask users to fill out some information. Currently, the Alexa skill takes six input values: patient name, patient gender, recent height of the patient, growth type of the patient, the year value of the skeletal age, and the month value of the skeletal age. Using these values, Alexa parses a google sheet that holds the height prediction table (converted to csv format) to return the predicted height. Attributes are then stored using Amazon DynamoDB.
 
